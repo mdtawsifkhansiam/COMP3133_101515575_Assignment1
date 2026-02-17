@@ -25,6 +25,13 @@ Student ID: 101515575
 - Update Employee
 - Delete Employee
 - Error Handling
+  
+## How to Run
+
+1. Clone repo
+2. Run `npm install`
+3. Create `.env` file
+4. Add:
 
 ### Sample Login Credentials
 
