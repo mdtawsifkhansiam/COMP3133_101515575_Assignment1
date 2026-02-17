@@ -33,7 +33,7 @@ Student ID: 101515575
 3. Create `.env` file
 4. Add:
 MONGO_URI=yourMongoDBString
-JWT_SECRET=yourSecret
+ JWT_SECRET=yourSecret
 5. Run `npm run dev`
 
 ### Sample Login Credentials
