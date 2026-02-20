@@ -1,11 +1,14 @@
+const { GraphQLUpload } = require("graphql-upload");
+const cloudinary = require("../config/cloudinary");
 const User = require("../models/User");
 const Employee = require("../models/Employee");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const resolvers = {
-  Query: {
+  Upload: GraphQLUpload,
 
+  Query: {
     async login(_, { username, email, password }) {
       const user = await User.findOne({
         $or: [{ username }, { email }]
@@ -50,12 +53,58 @@ const resolvers = {
       return await user.save();
     },
 
-    async addEmployee(_, args) {
-      const employee = new Employee(args);
+    // ✅ ADD EMPLOYEE WITH PHOTO
+    async addEmployee(_, { employee_photo, ...rest }) {
+
+      let imageUrl = "";
+
+      if (employee_photo) {
+        const { createReadStream } = await employee_photo;
+        const stream = createReadStream();
+
+        const result = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: "employees" },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          stream.pipe(uploadStream);
+        });
+
+        imageUrl = result.secure_url;
+      }
+
+      const employee = new Employee({
+        ...rest,
+        employee_photo: imageUrl
+      });
+
       return await employee.save();
     },
 
-    async updateEmployee(_, { id, ...updates }) {
+    // ✅ UPDATE EMPLOYEE WITH OPTIONAL NEW PHOTO
+    async updateEmployee(_, { id, employee_photo, ...updates }) {
+
+      if (employee_photo) {
+        const { createReadStream } = await employee_photo;
+        const stream = createReadStream();
+
+        const result = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: "employees" },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          stream.pipe(uploadStream);
+        });
+
+        updates.employee_photo = result.secure_url;
+      }
+
       return await Employee.findByIdAndUpdate(id, updates, { new: true });
     },
 

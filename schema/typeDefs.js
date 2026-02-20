@@ -2,6 +2,8 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
 
+scalar Upload
+
 type User {
   id: ID
   username: String
@@ -36,6 +38,7 @@ type Query {
 
 type Mutation {
   signup(username: String!, email: String!, password: String!): User
+
   addEmployee(
     first_name: String!
     last_name: String!
@@ -45,9 +48,17 @@ type Mutation {
     salary: Float!
     date_of_joining: String!
     department: String!
-    employee_photo: String
+    employee_photo: Upload
   ): Employee
-  updateEmployee(id: ID!, designation: String, department: String, salary: Float): Employee
+
+  updateEmployee(
+    id: ID!
+    designation: String
+    department: String
+    salary: Float
+    employee_photo: Upload
+  ): Employee
+
   deleteEmployee(id: ID!): String
 }
 `;

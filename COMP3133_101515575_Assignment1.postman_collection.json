@@ -240,6 +240,48 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "10_GetEmployeePhoto",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "operations",
+              "value": "{\n  \"query\": \"mutation($file: Upload!) { addEmployee(first_name: \\\"Photo\\\", last_name: \\\"Test\\\", email: \\\"phototest@test.com\\\", gender: \\\"Male\\\", designation: \\\"Designer\\\", salary: 5000, date_of_joining: \\\"2024-01-01\\\", department: \\\"Design\\\", employee_photo: $file) { id first_name employee_photo } }\",\n  \"variables\": { \"file\": null }\n}",
+              "type": "text",
+              "uuid": "93a07e5c-9959-44e2-ba1b-bcfd041174dc"
+            },
+            {
+              "key": "map",
+              "value": "{\n  \"0\": [\"variables.file\"]\n}",
+              "type": "text",
+              "uuid": "469faef7-4f83-4978-8366-7555ab70f228"
+            },
+            {
+              "key": "0",
+              "type": "file",
+              "uuid": "b27dad65-b5f7-46c2-b7f2-a50123fcd674",
+              "src": "postman-cloud:///1f10df97-477e-4bb0-89d2-c2a346511273"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:4000/graphql",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "graphql"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }
